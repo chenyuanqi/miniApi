@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN" style="height:100%">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>API | {:C('APP_PROJECT')}项目</title>
+    <link rel="icon" type="image/x-icon" href="[!IMG]favicon.ico">
+    <link href="[!CSS]bootstrap-3.3.4/css/bootstrap.min.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <script src="[!JS]html5shiv.min.js"></script>
+    <script src="[!JS]respond.min.js"></script>
+    <![endif]-->
+    <link href="[!CSS]style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body style="height:100%">
+    <div class="container-fluid" style="background:white;height:100%;">
+        <div class="row" style="height:100%;">
+            <!--左侧导航start-->
+            <div class="col-md-3" style="position:relative;background:#f5f5f5;padding:10px;height:100%;border-right:#ddd 1px solid;overflow-y:auto">
+                <div style="height:50px;font-size:30px;line-height:50px;">
+                    <a style="color:#000000;text-shadow:1px 0px 1px #666;text-decoration: none" href="__ROOT__"> <span class="glyphicon glyphicon-random" aria-hidden="true" style="width:40px;"></span>&nbsp; <span style="position: relative;top:-3px;">{:C('APP_PROJECT')}项目 API<span style="font-size:12px;position:relative;top:-13px;">&nbsp;{:C('APP_VERSION')}</span>
+                    </a>
+                    </span>
+                </div>
+                <!-- 菜单项 -->
+                <div class="form-group">
+                    <!-- <input type="text" class="form-control" id="searchcate" onkeyup="search(this)" placeholder="搜易点"> -->
+                    <!-- <if condition="$Think.cookie.isLogin eq 1">
+                    只有超级管理员才可以添加分类
+                        <div style="float:right;margin-right:20px;">
+                            <button class="btn btn-success" name="op" value="add" onclick="javascript: location.href ='{:U('Category/addCategory')}';">新增分类</button>
+                        </div>
+                    </if> -->
+                </div>
+                <div class="list">
+                    <!-- 基础支持 -->
+                    <ul class="list-unstyled">
+                            <li class="menu" id="info_1">
+                                基础支持(返回码说明)<br/>
+                                <!-- 相关接口 -->
+                                <ul class="list-unstyled" style="padding:5px">
+                                    <li class="menu" id="son_1_1">
+                                        <a href="{:U('Interface/returnCode')}"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true">返回码说明</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <if condition="$Think.cookie.isLogin eq 1">
+                                <ul class="list-unstyled" style="padding:5px">
+                                    <li class="menu" id="son_1_2">                                      
+                                        <a href="{:U('Category/addCategory')}"><span class="glyphicon glyphicon-menu-right" aria-hidden="true">新增分类</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                                </if>
+                            </li>
+                    </ul>
+                    <!-- 基础支持End -->
+                    <volist name="cateData" id='rs'>
+                    <ul class="list-unstyled">
+                            <li class="menu" id="info_{$rs.id}">
+                                {$rs.title}({$rs.detail})<br/>
+                                <!--只有超级管理员才可以对分类进行操作-->
+                                <div style="float:right;margin-right:13px;">&nbsp; 
+                                    <if condition="$Think.cookie.isLogin eq 1">                                
+                                    <button class="btn btn-info btn-xs" name="ad" value="edit" onclick="addRecord({$rs.id});">add</button>&nbsp;
+                                    <button class="btn btn-warning btn-xs" name="ed" value="edit" onclick="editRecord({$rs.id});">edit</button>&nbsp;
+                                    <button class="btn btn-danger btn-xs" name="de" value="delete" onclick="delRecord({$rs.id})">delete</button>&nbsp;
+                                    </if>
+                                    <a href="javascript: showRecord({$rs.id});"><img 
+                                    <if condition="$Think.get.cid neq $rs['id']">
+                                    src="__ROOT__/Public/images/on.png"
+                                    <else/>
+                                    src="__ROOT__/Public/images/off.png"
+                                    </if> width="24px" height="24px" id="display_{$rs.id}" /></a>
+                                </div>
+                                
+                                <!-- 相关接口 -->
+                                <div id="son_{$rs.id}" <if condition="$Think.get.cid neq $rs['id']">style="display: none;"</if> >
+                                <volist name="rs['interface']" id='son'>
+                                <ul class="list-unstyled" style="padding:5px">
+                                    <li class="menu" id="api_{$son.id|md5}">
+                                        <a href="{:U('Interface/interfaceInfo/id/'.$son['id'].'/cid/'.$rs['id'])}" id="menu_{$son.id|md5}"> <span class="glyphicon glyphicon-menu-right" aria-hidden="true">{$son.interface_name}</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                                </volist>
+                                </div>
+                                <!-- 相关接口End -->
+                            </li>
+                            <!--接口分类关键字(js通过此关健字进行模糊查找)start--> 
+                            <span class="keyword" id="{$son.id|md5}{$son.interface_code}<|-|>{$son.interface_name}<|-|>{$son.interface_detail}<|-|>{$son.ext}<|-|>{$son.interface_url}"></span>
+                            <!--接口关键字(js通过此关健字进行模糊查找)end-->
+                    </ul>
+                    </volist>
+                </div>
+                <!-- 菜单End -->
+            </div>
+            <!--左侧导航end-->
+            <div class="col-md-9" style="height:100%;background:white;margin:0px;overflow-y:auto;padding:0px;">
+                <!--顶部导航start-->
+                <div class="textshadow" style="font-size:16px;widht:100%;height:60px;line-height:60px;padding:0 16px 0 16px;;border-bottom:#ddd 1px solid"> <span> <a href="__ROOT__">Home</a> > {$title|default='嗨, 欢迎光临'}</span>
+                    <span style="float:right">
+                        <if condition="$Think.cookie.isLogin eq 1">
+                        <a href="{:U('Login/logout')}">退出&nbsp;&nbsp;<span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a>
+                        <else/> 
+                        <a href="{:U('Login/login')}">登录&nbsp;&nbsp;<span class="glyphicon glyphicon-log-in" aria-hidden="true"></span></a>
+                         </if>
+                    </span>
+                </div>
+                <!--顶部导航end-->
+                <!--主窗口start-->
+                <div style="padding:16px;">

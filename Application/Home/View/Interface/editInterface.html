@@ -1,0 +1,238 @@
+<include file="Public:header" />
+<!-- 加载头部End -->
+<div style="border:1px solid #ddd">
+    <div style="background:#f5f5f5;padding:20px;position:relative">
+        <h4>编辑接口<span style="font-size:12px;padding-left:20px;color:#a94442">(注：接口编号、名称、请求地址为必填项)</span></h4>
+        <div style="margin-left:20px;">
+            <form action="" method="post" id="form">
+                <h5>基本信息</h5>
+                <div class="form-group has-error">
+                    <div class="input-group">
+                        <div class="input-group-addon">接口编号</div>
+                        <input type="text" class="form-control" name="num" placeholder="接口编号" value="{$interfaceData.interface_code}" required="required">
+                    </div>
+                </div>
+                <div class="form-group has-error">
+                    <div class="input-group">
+                        <div class="input-group-addon">接口名称</div>
+                        <input type="text" class="form-control" name="name" placeholder="接口名称" value="{$interfaceData.interface_name}" required="required">
+                    </div>
+                </div>
+                <div class="form-group has-error">
+                    <div class="input-group">
+                        <div class="input-group-addon">请求地址</div>
+                        <input type="text" class="form-control" name="url" placeholder="请求地址" value="{$interfaceData.interface_url}" required="required">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <textarea name="des" class="form-control" placeholder="简要描述">{$interfaceData.interface_detail}</textarea>
+                </div>
+                <div class="form-group">
+                    <h5>请求参数</h5>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="col-md-3">参数名</th>
+                                <th class="col-md-2">是否必须</th>
+                                <th class="col-md-2">传输方式</th>
+                                <th class="col-md-2">排序</th>
+                                <th class="col-md-4">描述</th>
+                                <th class="col-md-1">
+                                    <button type="button" class="btn btn-success" onclick="add()">新增</button>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="parameter">
+                            <volist name="paramData" id='param'>
+                            <tr>
+                                <td class="form-group has-error">
+                                    <input type="text" class="form-control" name="p[name][]" placeholder="参数名" value="{$param.param_name}" required="required">
+                                </td>
+                                <td>
+                                    <select class="form-control" name="p[type][]">
+                                        <option value="1" <if condition="$param['param_needs'] eq 1">selected='selected'</if> >YES</option>
+                                        <option value="2" <if condition="$param['param_needs'] eq 2">selected='selected'</if> >NO</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-control" name="p[mode][]">
+                                        <option value="0" <if condition="$param['param_type'] eq 0">selected='selected'</if> >POST/GET</option>
+                                        <option value="1" <if condition="$param['param_type'] eq 1">selected='selected'</if> >POST</option>
+                                        <option value="2" <if condition="$param['param_type'] eq 2">selected='selected'</if> >GET</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="p[order][]" value="{$param.param_rank}" placeholder="排序值(0),越大越靠前">
+                                </td>
+                                <td class="form-group has-error">
+                                    <textarea name="p[des][]" rows="1" class="form-control" placeholder="描述, 含缺省值说明">{$param.param_detail}</textarea>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-danger" onclick="del(this)">删除</button>
+                                </td>
+                            </tr>
+                            </volist>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="form-group">
+                    <h5>返回结果<span style="font-size:12px;padding-left:20px;color:#a94442">(注：返回格式为 json/jsonp)</span></h5>
+                    <textarea name="re" rows="3" class="form-control" id="re" >{$interfaceData.return_value}</textarea>
+                </div>
+                <div class="form-group">
+                    <h5>返回值说明</h5>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="col-md-3">返回参数</th>
+                                <th class="col-md-2">简要说明</th>
+                                <th class="col-md-2">排序</th>
+                                <th class="col-md-1">
+                                    <button type="button" class="btn btn-success" onclick="addReturn()">新增</button>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="return_value">
+                            <volist name="returnData" id='return'>
+                            <tr>
+                                <td class="form-group has-error">
+                                    <input type="text" class="form-control" name="r[value][]" value="{$return.return_name}" placeholder="返回参数">
+                                </td>
+                                <td class="form-group has-error">
+                                    <input type="text" class="form-control" name="r[detail][]" value="{$return.return_detail}" placeholder="简要说明">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="r[order][]" value="{$return.return_rank}" placeholder="排序值(0),越大越靠前">
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-danger" onclick="delReturn(this)">删除</button>
+                                </td>
+                            </tr>
+                            </volist>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="form-group">
+                    <h5>备注</h5>
+                    <textarea name="memo" rows="3" class="form-control" placeholder="备注信息">{$interfaceData.ext}</textarea>
+                </div>
+                <input type="hidden" name="id" value="{$Think.get.id}" />
+                <button type="button" class="btn btn-success" id="submitbutton">Update !</button>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- 加载尾部 -->
+<include file="Public:footer" />
+<!-- 编辑器 simditor 引入 -->
+<link rel="stylesheet" type="text/css" href="__ROOT__/Library/simditor/styles/simditor.css" />
+<script type="text/javascript" src="__ROOT__/Library/simditor/scripts/jquery.min.js"></script>
+<script type="text/javascript" src="__ROOT__/Library/simditor/scripts/module.js"></script>
+<script type="text/javascript" src="__ROOT__/Library/simditor/scripts/hotkeys.js"></script>
+<script type="text/javascript" src="__ROOT__/Library/simditor/scripts/uploader.js"></script>
+<script type="text/javascript" src="__ROOT__/Library/simditor/scripts/simditor.js"></script>
+<script type='text/javascript'>
+var editor = new Simditor({   textarea: $('#re') });
+</script>
+<script type="text/javascript">
+    //加载扩展模块
+    layer.config({
+        extend: 'extend/layer.ext.js'
+    });
+    $(function() {
+        // 提交表单
+        $("#submitbutton").click(function() {
+            if (validateForm()) {
+                checkSubmit();
+            }
+        });
+    })
+    // 提交检测
+    function validateForm() {
+        if ('' == $("input[name='num']").val()) {
+            layer.msg('提示：接口编号不能为空！');
+            return false;
+        }
+        if ('' == $("input[name='name']").val()) {
+            layer.msg('提示：接口名称不能为空！');
+            return false;
+        }
+        if ('' == $("input[name='url']").val()) {
+            layer.msg('提示：请求地址不能为空！');
+            return false;
+        }
+        if ('' == $("input[name='des']").val()) {
+            layer.msg('提示：简要描述不能为空！');
+            return false;
+        }
+        if ('' == $("input[name='re']").val()) {
+            layer.msg('提示：返回结果不能为空！');
+            return false;
+        }
+        return true;
+    }
+    // 提交ajax
+    function checkSubmit() {
+        $.ajax({
+            url: "{:U('Interface/editInterfaceAction')}",
+            type: "POST",
+            data: $('#form').serialize(),
+            dataType: "text",
+            success: function(re) {
+                if ('success' != re) {
+                    layer.alert(re);
+                } else {
+                    location.href = "{:U('Index/index')}";
+                }   
+            }
+        });
+        return true;
+    }
+    // 增加参数
+    function add() {
+        var $html = '<tr>' 
+        + '<td class="form-group has-error" ><input type="text" class="form-control has-error" name="p[name][]" placeholder="参数名" required="required"></td>' 
+        + '<td>' 
+        + '<select class="form-control" name="p[type][]">' 
+        + '<option value="1">YES</option> <option value="2">N0</option>' 
+        + '</select >' 
+        + '</td>' 
+        + '<td>' 
+        + '<select class="form-control" name="p[mode][]">' 
+        + '<option value="0">POST/GET</option> <option value="1">POST</option> <option value="2">GET</option>' 
+        + '</select >' 
+        + '</td>'
+        + '<td>' 
+        + '<input type="text" class="form-control" name="p[order][]" placeholder="排序值(0),越大越靠前"></td>' 
+        + '<td class="form-group has-error">' 
+        + '<textarea name="p[des][]" rows="1" class="form-control" placeholder="描述"></textarea>' 
+        + '</td>' 
+        + '<td>' 
+        + '<button type="button" class="btn btn-danger" onclick="del(this)">删除</button>' 
+        + '</td>' 
+        + '</tr >';
+        $('#parameter').append($html);
+    }
+    // 删除参数
+    function del(obj) {
+        $(obj).parents('tr').remove();
+    }
+    // 增加返回参数
+    function addReturn() {
+        var $html = '<tr>' 
+        + '<td class="form-group has-error" ><input type="text" class="form-control" name="r[value][]" placeholder="返回参数"></td>' 
+        + '<td class="form-group has-error">' 
+        + '<input type="text" class="form-control" name="r[detail][]" placeholder="简要说明"></td>'  
+        + '<td>'
+        + '<input type="text" class="form-control" name="r[order][]" placeholder="排序值(0),越大越靠前"></td>'  
+        + '<td>'
+        + '<button type="button" class="btn btn-danger" onclick="delReturn(this)">删除</button>' 
+        + '</td>' 
+        + '</tr >';
+        $('#return_value').append($html);
+    }
+    // 删除返回参数
+    function delReturn(obj) {
+        $(obj).parents('tr').remove();
+    }
+</script>

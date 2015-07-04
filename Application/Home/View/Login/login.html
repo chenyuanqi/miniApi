@@ -1,0 +1,63 @@
+<include file="Public:header" />
+<!-- 加载头部End -->
+<div style="border:1px solid #ddd">
+    <div style="background:#f5f5f5;padding:20px;position:relative">
+        <h4>登录</h4>
+        <div>
+            <form action="" method="post" id="form">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="user" placeholder="登录名" value="{$Think.cookie.user}" required="required">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" name="pwd" placeholder="口令" value="{$Think.cookie.password}" required="required">
+                </div>
+                <button type="button" class="btn btn-success" id="submitbutton">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- 加载尾部 -->
+<include file="Public:footer" />
+<script type="text/javascript">
+//加载扩展模块
+layer.config({
+    extend: 'extend/layer.ext.js'
+});
+$(function() {
+    // 提交表单
+    $("#submitbutton").click(function() {
+        if (validateForm()) {
+            checkSubmit();
+        }
+    });
+})
+// 提交检测
+function validateForm() {
+    if ('' == $("input[name='user']").val()) {
+        layer.msg('提示：登陆名不能为空！');
+        return false;
+    }
+    if ('' == $("input[name='pwd']").val()) {
+        layer.msg('提示：口令不能为空！');
+        return false;
+    }
+    return true;
+}
+// 提交ajax
+function checkSubmit() {
+    $.ajax({
+        url: "{:U('Login/loginAction')}",
+        type: "POST",
+        data: $('#form').serialize(),
+        dataType: "text",
+        success: function(re) {
+            if ('success' != re) {
+                layer.alert(re);
+            } else {
+                location.href = "{:U('Index/index')}";
+            }   
+        }
+    });
+    return true;
+}
+</script>

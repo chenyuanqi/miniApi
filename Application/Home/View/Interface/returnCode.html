@@ -1,0 +1,66 @@
+<include file="Public:header" />
+<!-- 加载头部End -->
+<div class="info_api" style="border:1px solid #ddd;margin-bottom:20px;" id="info_api_">
+    <div style="background:#f5f5f5;padding:20px;position:relative">
+        <div class="textshadow" style="position: absolute;right:0;top:4px;right:8px;">&nbsp;
+        </div>
+        <h3 class="textshadow">
+        返回码说明
+        </h3>
+        <p> <b>编号&nbsp;&nbsp;:&nbsp;&nbsp;
+        <span style="color:red">
+        00001
+        </span></b>
+        </p>
+        <div> <kbd>
+        基础支持
+        </kbd>　<kbd>
+        描述：使用须知
+        </kbd>
+        </div>
+    </div>
+    <div class="info">
+    No.1 token 除登录、注册外, 其他都要带上它 (GET 方式);<br/>
+    No.2 token 每次使用后刷新其最后有效时间; 重新登录或异地登录则更改 token<br/>
+    No.3 每次调用接口时, 可能获得正确或错误的返回码，开发者可以根据返回码信息调试接口, 排查错误。
+    </div>
+    
+    <div class="form-group" style="padding:20px;">
+        <h4>参照表</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="col-md-3"> </th>
+                    <th class="col-md-3">返回值</th>
+                    <th class="col-md-2">简要说明</th>
+                    <th class="col-md-2"> </th>
+                </tr>
+            </thead>
+            <tbody id="return_value">
+                <tr>
+                    <td> </td>
+                    <td>SUCCUSS</td>
+                    <td>请求成功</td>
+                    <td> </td>
+                </tr>
+                <tr>
+                    <td> </td>
+                    <td>ERROR</td>
+                    <td>请求失败</td>
+                    <td> </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div style="background:#ffffff;padding:20px;">
+        <h4 class="textshadow"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> 后记</h4>
+        <pre style="background:honeydew">
+        如果您发现有任何臭虫 [ bug ] 或者建议等，请及时联系我们。<br/>
+        QQ：908379294<br/>
+        Email：chenyuanqi90s@qq.com
+        </pre>
+    </div>
+</div>
+<!--接口详细列表end-->
+<!-- 加载尾部 -->
+<include file="Public:footer" />

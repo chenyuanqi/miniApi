@@ -1,0 +1,69 @@
+<include file="Public:header" />
+<!-- 加载头部End -->
+<div style="border:1px solid #ddd">
+    <div style="background:#f5f5f5;padding:20px;position:relative">
+        <h4>添加分类</h4>
+        <div>
+            <form action="" method="post" id="form">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="cname" placeholder="请填写分类名" />
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" name="cdesc" placeholder="请填写描述" />
+                </div>
+                <div class="form-group">
+                    <input type="number" class="form-control" name="order" placeholder="排序值越大越靠前" />
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" name="display" id="checkbox_b1" value="1" class="chk_2" checked="checked" /><label for="checkbox_b1">显示</label>
+                </div>
+                <button type="button" class="btn btn-success" name="op" value="add" id="submitbutton">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- 加载尾部 -->
+<include file="Public:footer" />
+<script type="text/javascript">
+//加载扩展模块
+layer.config({
+    extend: 'extend/layer.ext.js'
+});
+$(function() {
+    // 提交表单
+    $("#submitbutton").click(function() {
+        if (validateForm()) {
+            checkSubmit();
+        }
+    });
+})
+// 提交检测
+function validateForm() {
+    if ('' == $("input[name='cname']").val()) {
+        layer.msg('提示：分类名不能为空！');
+        return false;
+    }
+    if ('' == $("input[name='cdesc']").val()) {
+        layer.msg('提示：描述不能为空！');
+        return false;
+    }
+    return true;
+}
+// 提交ajax
+function checkSubmit() {
+    $.ajax({
+        url: "{:U('Category/addCategoryAction')}",
+        type: "POST",
+        data: $('#form').serialize(),
+        dataType: "text",
+        success: function(re) {
+            if ('success' != re) {
+                // layer.alert(re);
+            } else {
+                location.href = "{:U('Index/index')}";
+            }   
+        }
+    });
+    return true;
+}
+</script>

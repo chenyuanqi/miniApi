@@ -1,0 +1,41 @@
+</div>
+<!--主窗口end-->
+</div>
+</div>
+</div>
+<script src="[!JS]jquery.min.js"></script>
+<script src="[!CSS]bootstrap-3.3.4/js/bootstrap.min.js"></script>
+<script src="__ROOT__/Library/layer/layer.js"></script>
+</body>
+
+</html>
+<!--jquery模糊查询start-->
+<script type="text/javascript">
+    // 新增接口
+    function addRecord(obj) {
+        window.location.href = "{:U('Interface/addInterface/cid/"+ obj +"')}";
+    }
+    // 删除分类
+    function delRecord(obj) {
+        layer.confirm('确定删除该分类吗？<span style="color: red;">删除将直接影响到该分类下的接口无法展示!</span>', function(index){
+            window.location.href = "{:U('Category/delCategory/id/"+ obj +"')}";
+            layer.close(index);
+        });
+    }
+    // 编辑分类
+    function editRecord(obj) {
+        window.location.href = "{:U('Category/editCategory/id/"+ obj +"')}";
+    }
+    // 查看接口
+    function showRecord(obj) {
+        var isshow = $('#son_' + obj).css('display');
+        if ('none' != isshow) {
+            $('#son_' + obj).css('display', 'none');
+            $('#display_' + obj).attr('src', '__ROOT__/Public/images/on.png');
+        } else {
+            $('#son_' + obj).css('display', 'block');
+            $('#display_' + obj).attr('src', '__ROOT__/Public/images/off.png');
+        }
+    }
+</script>
+<!--jquery模糊查询end-->
