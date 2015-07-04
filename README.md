@@ -1,6 +1,7 @@
 # miniApi
 基于 thinkPHP 的中小型项目 api 在线说明文档, 展示地址：
-   http://www.chenyuanqi.com/miniApi
+   http://www.chenyuanqi.com/miniApi （user: admin, password：123456）
+
    
 <h5>什么是 miniApi?</h5>
 miniApi 是一个在线的 API 文档系统，致力于快速解决团队内部接口文档的编写，和减少团队协作开发的沟通成本。
