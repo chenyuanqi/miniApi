@@ -233,8 +233,8 @@ function msg_send($uid, $phone, $content = '') {
         $mContent = $content;
     }
     
-    $mUserName = "yangyo";
-    $mpassword = "199205";
+    $mUserName = "";
+    $mpassword = "";
     $url       = "http://api.chanyoo.cn/utf8/interface/send_sms.aspx?username=$mUserName&password=$mpassword&receiver=$mSendNum&content=" . $mContent . "";
     $xml       = simplexml_load_file($url);
     setcookie("usermobile", $mSendNum);
