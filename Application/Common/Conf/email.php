@@ -20,12 +20,12 @@ return array(
     // 'HRML' => TRUE, //HTML格式 false => TXT格式
 	
     // 发件邮箱地址
-    'SEND_ADDRESS' => 'info@dadazu.com',
-	'USERNAME'	=>	'info@dadazu.com',
+    'SEND_ADDRESS' => '',
+	'USERNAME'	=>	'',
     // 发件邮箱密码
-    'SEND_PASSWORD' => 'abc123456789,',
+    'SEND_PASSWORD' => '',
     // 设置发送人名称
-    'SET_FROM' => '五星体育运动网站 Five-Star Sports Website',
+    'SET_FROM' => '',
     // 是否有抄送
     'OPEN_CC' => TRUE,
     // 抄送地址
