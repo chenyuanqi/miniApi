@@ -58,7 +58,7 @@ function checkSubmit() {
         dataType: "text",
         success: function(re) {
             if ('success' != re) {
-                // layer.alert(re);
+                layer.alert(re);
             } else {
                 location.href = "{:U('Index/index')}";
             }   

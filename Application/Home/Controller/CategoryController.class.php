@@ -61,7 +61,8 @@ class CategoryController extends CommonController {
     			'status' 		=> I('post.display', '', 'htmlspecialchars,int') ==1 ?: 2,
     			'create_time' 	=> date('Y-m-d H:i:s')
     		);
-    		$result = M('category')->add($cateData);
+            D('category')->create($cateData);
+    		$result = D('category')->add();
 
             unset($cateData);
     		!$result && exit('提示：添加分类失败，请稍后重试');
@@ -84,7 +85,8 @@ class CategoryController extends CommonController {
                 'rank'          => I('post.order', '', 'htmlspecialchars,int'),
                 'status'        => I('post.display', '', 'htmlspecialchars,int') ==1 ?: 2
             );
-            $result = M('category')->save($cateData);
+            D('category')->create($cateData);
+            $result = D('category')->save($cateData);
 
             unset($cateData);
             !$result && exit('提示：编辑分类失败，请稍后重试');

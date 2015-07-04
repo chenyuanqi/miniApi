@@ -24,11 +24,13 @@ class InterfaceController extends CommonController {
     public function interfaceInfo() {
 
         $interfaceData = M('interface')->find(intval(I('get.id')));
-
+        // 接口
         $this->interfaceData = $interfaceData;
+        // 分类
         $this->categoryName  = M('category')->where(array(
             'id' => $interfaceData['cid']
         ))->getField('title');
+        // 参数
         $this->paramData     = M('parameter')->where(array(
             'iid' => $interfaceData['id']
         ))->order('param_rank desc')->select();
@@ -46,8 +48,10 @@ class InterfaceController extends CommonController {
      * @author cyq <chenyuanqi90s@163.com>
      */
     public function addInterface(){
+        // 分类名
         $categoryName= M('category')->where(array(
             'id' => I('get.cid')))->getField('title'); 
+
         $this->title = '添加接口『分类：'.$categoryName.'』';  
 		$this->display();
     }
@@ -62,7 +66,9 @@ class InterfaceController extends CommonController {
         $interfaceData = M('interface')->find(I('get.id', '', 'htmlspecialchars,int'));
 
         !$interfaceData && $this->redirect('Index/index');
+        // 接口
         $this->interfaceData = $interfaceData;
+        // 参数
         $this->paramData     = M('parameter')->where(array(
             'iid' => $interfaceData['id']
         ))->order('param_rank desc')->select();
@@ -108,7 +114,8 @@ class InterfaceController extends CommonController {
                 'ext'             => I('post.memo'),
     			'create_time' 	  => date('Y-m-d H:i:s')
     		);
-            $result = M('Interface')->add($interfaceData);
+            D('Interface')->create($interfaceData);
+            $result = D('Interface')->add($interfaceData);
             !$result && exit('提示：添加接口失败，请稍后重试');
 
             // 参数数据 ++
@@ -117,7 +124,7 @@ class InterfaceController extends CommonController {
                 $paramData = array();
 
                 $paramData = array(
-                    'iid' => $result,
+                    'iid'           => $result,
                     'param_name'    => $_POST['p']['name'][$i],
                     'param_detail'  => $_POST['p']['des'][$i],
                     'param_needs'   => $_POST['p']['type'][$i],
@@ -125,7 +132,8 @@ class InterfaceController extends CommonController {
                     'param_rank'    => $_POST['p']['order'][$i],
                     'create_time'   => date('Y-m-d H:i:s')
                 );
-                M('parameter')->add($paramData);
+                D('parameter')->create($paramData);
+                D('parameter')->add($paramData);
             }
             
             // 返回值数据 +++
@@ -134,13 +142,14 @@ class InterfaceController extends CommonController {
                 $returnData = array();
 
                 $returnData = array(
-                    'iid' => $result,
+                    'iid'            => $result,
                     'return_name'    => $_POST['r']['value'][$i],
                     'return_detail'  => $_POST['r']['detail'][$i],
                     'return_rank'    => $_POST['r']['order'][$i],
                     'create_time'    => date('Y-m-d H:i:s')
                 );
-                M('return')->add($returnData);
+                D('return')->create($returnData);
+                D('return')->add($returnData);
             }
             
             unset($interfaceData, $paramData, $returnData);
@@ -165,9 +174,10 @@ class InterfaceController extends CommonController {
                 'return_value'    => I('post.re'),
                 'interface_url'   => I('post.url'),
                 'ext'             => I('post.memo'),
-                'lastupdate_time'     => date('Y-m-d H:i:s')
+                'lastupdate_time' => date('Y-m-d H:i:s')
             );
-            $result = M('Interface')->save($interfaceData);
+            D('Interface')->create($interfaceData);
+            $result = D('Interface')->save($interfaceData);
             !$result && exit('提示：添加接口失败，请稍后重试');
 
             // 更新成功 + 更新版本号
@@ -184,7 +194,7 @@ class InterfaceController extends CommonController {
                 $paramData = array();
 
                 $paramData = array(
-                    'iid'           => I('post.id'),
+                    'iid'           => I('post.id', '', 'htmlspecialchars,int'),
                     'param_name'    => $_POST['p']['name'][$i],
                     'param_detail'  => $_POST['p']['des'][$i],
                     'param_needs'   => $_POST['p']['type'][$i],
@@ -192,7 +202,8 @@ class InterfaceController extends CommonController {
                     'param_rank'    => $_POST['p']['order'][$i],
                     'create_time'   => date('Y-m-d H:i:s')
                 );
-                M('parameter')->add($paramData);
+                D('parameter')->create($paramData);
+                D('parameter')->add($paramData);
             }
             
             // 返回值数据 +++
@@ -204,13 +215,14 @@ class InterfaceController extends CommonController {
                 $returnData = array();
 
                 $returnData = array(
-                    'iid'            => I('post.id'),
+                    'iid'            => I('post.id', '', 'htmlspecialchars,int'),
                     'return_name'    => $_POST['r']['value'][$i],
                     'return_detail'  => $_POST['r']['detail'][$i],
                     'return_rank'    => $_POST['r']['order'][$i],
                     'create_time'    => date('Y-m-d H:i:s')
                 );
-                M('return')->add($returnData);
+                D('return')->create($returnData);
+                D('return')->add($returnData);
             }
 
             unset($interfaceData, $paramData, $returnData);
