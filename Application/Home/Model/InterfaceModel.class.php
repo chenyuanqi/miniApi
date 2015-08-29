@@ -1,5 +1,8 @@
 <?php
-namespace Home\Model;
+
+namespace Api\Model;
+
+
 use Think\Model;
 
 class InterfaceModel extends Model {

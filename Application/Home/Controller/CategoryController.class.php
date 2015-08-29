@@ -1,6 +1,6 @@
 <?php
 
-namespace Home\Controller;
+namespace Api\Controller;
 
 
 use Think\Controller;
@@ -43,6 +43,7 @@ class CategoryController extends CommonController {
         $result = M('category')->where(array(
             'id' => I('get.id', '', 'htmlspecialchars,int')
         ))->setField('status', 2);
+        $this->redirect('Index/index');
     }
 
 

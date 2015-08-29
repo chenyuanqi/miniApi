@@ -23,7 +23,7 @@
         </kbd>
         </div>
     </div>
-    <div class="info">请求链接：<a href="{$interfaceData.interface_url}">{$interfaceData.interface_url}</a></div>
+    <div class="info">请求链接：<a href="{$interfaceData.interface_url}" target="_blank" >{$interfaceData.interface_url}</a></div>
     <div style="background:#ffffff;padding:20px;">
         <h4 class="textshadow">请求参数</h4>
         <table class="table">
@@ -53,10 +53,15 @@
                         <td>{$param.param_detail}</td>
                     </tr>
                 </volist>
+                <if condition="$paramData eq null">
+                <tr>
+                    <td colspan='2'><span style='color:red;'>此接口无需参数 (除 token 外)</span></td>
+                </tr>
+                </if>
             </tbody>
         </table>
     </div>
-    <div style="background:#ffffff;padding:20px;">
+    <div style="background:#ffffff;padding:20px;word-break:break-all;">
         <h4 class="textshadow">返回值</h4>
         {$interfaceData.return_value|htmlspecialchars_decode}</div>
     <div class="form-group" style="padding:20px;">

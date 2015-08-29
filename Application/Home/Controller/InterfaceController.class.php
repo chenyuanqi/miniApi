@@ -1,6 +1,6 @@
 <?php
 
-namespace Home\Controller;
+namespace Api\Controller;
 
 
 use Think\Controller;
@@ -50,7 +50,31 @@ class InterfaceController extends CommonController {
     public function addInterface(){
         // 分类名
         $categoryName= M('category')->where(array(
-            'id' => I('get.cid')))->getField('title'); 
+            'id' => I('get.cid')
+        ))->getField('title'); 
+        // 获取最新接口编号
+        $code = M('interface')->order('id desc')->getField('interface_code');
+        switch ($code) {
+            case $code < 9:
+                $this->code = '0000'.($code+1);
+                break;
+            
+            case ($code >= 9) && ($code < 99):
+                $this->code = '000'.($code+1);
+                break;
+
+            case ($code >= 99) && ($code <999):
+                $this->code = '00'.($code+1);
+                break;
+
+            case ($code >= 999) && ($code <9999):
+                $this->code = '0'.($code+1);
+                break;
+
+            default:
+                $this->code = $code+1;
+                break;
+        }
 
         $this->title = '添加接口『分类：'.$categoryName.'』';  
 		$this->display();
@@ -92,6 +116,7 @@ class InterfaceController extends CommonController {
         $result = M('Interface')->where(array(
             'id' => I('get.id', '', 'htmlspecialchars,int')
         ))->setField('status', 2);
+        $this->redirect('Index/index');
     }
 
 
@@ -119,7 +144,7 @@ class InterfaceController extends CommonController {
             !$result && exit('提示：添加接口失败，请稍后重试');
 
             // 参数数据 ++
-            $paramLen = count($_POST['p']);
+            $paramLen = count($_POST['p']['name']);
             for ($i = 0; $i < $paramLen; ++$i) { 
                 $paramData = array();
 
@@ -132,13 +157,16 @@ class InterfaceController extends CommonController {
                     'param_rank'    => $_POST['p']['order'][$i],
                     'create_time'   => date('Y-m-d H:i:s')
                 );
+                if(!$paramData['param_name']){
+                    continue;
+                }
                 D('parameter')->create($paramData);
                 D('parameter')->add($paramData);
             }
             
             // 返回值数据 +++
-            $returnLen = count($_POST['r']);
-            for ($i = 0; $i < $paramLen; ++$i) { 
+            $returnLen = count($_POST['r']['value']);
+            for ($i = 0; $i < $returnLen; ++$i) { 
                 $returnData = array();
 
                 $returnData = array(
@@ -148,6 +176,9 @@ class InterfaceController extends CommonController {
                     'return_rank'    => $_POST['r']['order'][$i],
                     'create_time'    => date('Y-m-d H:i:s')
                 );
+                if(!$returnData['return_name']){
+                    continue;
+                }
                 D('return')->create($returnData);
                 D('return')->add($returnData);
             }
@@ -189,7 +220,7 @@ class InterfaceController extends CommonController {
             M('parameter')->where(array(
                 'iid' => I('post.id', '', 'htmlspecialchars,int')))->delete();
 
-            $paramLen = count($_POST['p']);
+            $paramLen = count($_POST['p']['name']);
             for ($i = 0; $i < $paramLen; ++$i) { 
                 $paramData = array();
 
@@ -202,16 +233,19 @@ class InterfaceController extends CommonController {
                     'param_rank'    => $_POST['p']['order'][$i],
                     'create_time'   => date('Y-m-d H:i:s')
                 );
+                if(!$paramData['param_name']){
+                    continue;
+                }
                 D('parameter')->create($paramData);
                 D('parameter')->add($paramData);
             }
-            
+
             // 返回值数据 +++
             M('return')->where(array(
                 'iid' => I('post.id', '', 'htmlspecialchars,int')))->delete();
 
-            $returnLen = count($_POST['r']);
-            for ($i = 0; $i < $paramLen; ++$i) { 
+            $returnLen = count($_POST['r']['value']);
+            for ($i = 0; $i < $returnLen; ++$i) { 
                 $returnData = array();
 
                 $returnData = array(
@@ -221,6 +255,9 @@ class InterfaceController extends CommonController {
                     'return_rank'    => $_POST['r']['order'][$i],
                     'create_time'    => date('Y-m-d H:i:s')
                 );
+                if(!$returnData['return_name']){
+                    continue;
+                }
                 D('return')->create($returnData);
                 D('return')->add($returnData);
             }
