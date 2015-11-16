@@ -1,6 +1,7 @@
 # miniApi
 基于 thinkPHP 的中小型项目 api 在线说明文档, 展示地址：
    http://www.chenyuanqi.com/miniApi （user: admin, password：123456）
+另外，相应的接口测试工具地址为 http://www.chenyuanqi.com/tools/api.html
 
    
 <h5>什么是 miniApi?</h5>
